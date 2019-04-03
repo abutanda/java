@@ -1,3 +1,4 @@
+//github version
 import java.io.BufferedReader;
 import java.io. IOException;
 import java.io.InputStreamReader;
@@ -22,6 +23,7 @@ public class test {
 		String API_KEY = "LG7KVL-QJV2T43KWX" ;
 		String problem = "3x-7=11"; //need to get from camera
 		//String problemB = "x+7=11";
+                String steps;
 		String updateS = problem.replace ("=","%3D");
 		updateS = updateS.replace ("+","%2B");
 		updateS = updateS.replace ("/","%2F");
@@ -50,12 +52,21 @@ public class test {
 				NodeList errNodes = doc.getElementsByTagName("queryresult");
 				if (errNodes.getLength() > 0) {
 					Element err = (Element)errNodes.item(0);
-					System.out.println("possible solution  -"+err.getElementsByTagName("plaintext").item(2).getTextContent());
+                    			steps= err.getElementsByTagName("plaintext").item(2).getTextContent();
+					System.out.println("possible solution  -"+ steps);
+			String[] tokens= steps.split(":");
+			for (int i=0; i<tokens.length;i++){
 
+			//String dir1= tokens[0];
+			//String dir2= tokens[1];
+			//String dir3= tokens[2];
+			System.out.println(tokens[i]);
+			//System.out.println(dir2);
+			//System.out.println(dir3);
+			}
 				} else { 
 					// success
 				}
-
 			}catch (Exception e){
 				System.out.println("Error parsing");
 			}
