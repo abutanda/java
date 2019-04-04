@@ -1,4 +1,3 @@
-//github version
 import java.io.BufferedReader;
 import java.io. IOException;
 import java.io.InputStreamReader;
@@ -15,22 +14,20 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-//import wolfram Alpha 
-// ?
 
 public class test {
 	public static void main(String[] args)  {
 		String API_KEY = "LG7KVL-QJV2T43KWX" ;
 		String problem = "3x-7=11"; //need to get from camera
 		//String problemB = "x+7=11";
-                String steps;
+		String steps;
 		String updateS = problem.replace ("=","%3D");
 		updateS = updateS.replace ("+","%2B");
 		updateS = updateS.replace ("/","%2F");
-		System.out.println(updateS);
+		//System.out.println(updateS);
 
 		String  urlString  = "http://api.wolframalpha.com/v2/query?appid="+ API_KEY + "&input=solve+"+updateS+"&podstate=Result__Step-by-step+solution&format=plaintext";
-		System.out.println(urlString);
+		//System.out.println(urlString);
 		//3x-7%3D11
 
 
@@ -48,30 +45,25 @@ public class test {
 			//print out xml 
 			//System.out.println(result);
 			try{
-		    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(result.toString())));
+				Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(result.toString())));
 				NodeList errNodes = doc.getElementsByTagName("queryresult");
 				if (errNodes.getLength() > 0) {
 					Element err = (Element)errNodes.item(0);
-                    			steps= err.getElementsByTagName("plaintext").item(2).getTextContent();
-					System.out.println("possible solution  -"+ steps);
-			String[] tokens= steps.split(":");
-			for (int i=0; i<tokens.length;i++){
-
-			//String dir1= tokens[0];
-			//String dir2= tokens[1];
-			//String dir3= tokens[2];
-			System.out.println(tokens[i]);
-			//System.out.println(dir2);
-			//System.out.println(dir3);
-			}
-				} else { 
-					// success
+					steps= err.getElementsByTagName("plaintext").item(2).getTextContent();
+					//System.out.println("possible solution  -"+ steps);
+					int stepindex1= steps.indexOf(":");
+					int ansindex= steps.indexOf("|  |");	
+					String solution = steps.substring(ansindex+4, steps.length());
+					String temp = steps.substring(0,stepindex1);
+					String temp2 = steps.substring(stepindex1+1, steps.length()-1);
+					//int stepindex2= temp2.indexOf(":");
+					System.out.println(temp);
+					//System.out.println(temp2);
+					System.out.println(solution);
+				}}catch (Exception e){
+					System.out.println("Error parsing");
 				}
-			}catch (Exception e){
-				System.out.println("Error parsing");
-			}
-		}
-		catch(IOException e){
+		}catch(IOException e){
 			System.out.println(e.getMessage());
 		}
 
@@ -79,4 +71,5 @@ public class test {
 
 	}
 }
+//http://javadevnotes.com/java-string-split-tutorial-and-examples
 //https://chillyfacts.com/java-send-url-http-request-read-xml-response/
